@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CyberQuest: The Authentication Arena</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<header class="top">
+  <a class="logo" href="#" data-go="landing"><svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2l12 5v8c0 8-5 13-12 15C9 28 4 23 4 15V7z" fill="none" stroke="#22d3ee" stroke-width="2"/><path d="M11 16l4 4 7-8" fill="none" stroke="#a78bfa" stroke-width="2.5"/></svg><span>CyberQuest</span></a>
+  <nav aria-label="Main">
+    <a href="#" data-go="landing">Home</a>
+    <a href="#" data-go="learn">What you'll learn</a>
+    <a href="#" id="navMissions">Missions</a>
+    <button id="signOut" class="btn ghost" hidden>Sign out</button>
+  </nav>
+</header>
+<div class="notice" role="note">Educational simulation only. Browser storage and JavaScript checks can be modified or bypassed, so this login does not protect real accounts. Use fictional credentials.</div>
+<div id="compat" class="notice bad" hidden>Your browser blocks the Web Crypto API here, so demo accounts cannot be created. Try a current Chrome, Edge or Firefox, or serve the folder over http://localhost.</div>
+
+<main>
+<section id="landing" class="view">
+  <div class="hero">
+    <p class="tag">Think Like a Defender. Outsmart Every Attack.</p>
+    <h1>Your Identity Is Your First Line of Defense.</h1>
+    <p class="lead">Authentication proves who you are. Access control decides what you can do. Play six missions as a junior analyst at CyberQuest Academy and learn how both fail, and how to make them hold.</p>
+    <div class="row"><button class="btn" data-go="register">Enter the Arena</button><button class="btn ghost" data-go="learn">Explore Missions</button></div>
+  </div>
+  <div class="glass preview" aria-label="Dashboard preview">
+    <div class="stat"><b>Level 3</b><small>Analyst</small></div><div class="stat"><b>240 XP</b><small>Earned</small></div><div class="stat"><b>4/6</b><small>Missions</small></div><div class="stat"><b>92%</b><small>Accuracy</small></div>
+    <div class="bar"><i style="width:60%"></i></div>
+  </div>
+  <div class="grid4">
+    <article class="glass"><h3>Authentication</h3><p>Verify who is asking: passwords, OTPs, biometrics.</p></article>
+    <article class="glass"><h3>Authorization</h3><p>Decide what each role may do, using least privilege.</p></article>
+    <article class="glass"><h3>MFA</h3><p>Combine different factor types so one stolen secret is not enough.</p></article>
+    <article class="glass"><h3>Security challenges</h3><p>Spot credential stuffing, phishing, MFA fatigue and session theft.</p></article>
+  </div>
+</section>
+
+<section id="learn" class="view" hidden>
+  <h2>What you'll learn</h2>
+  <ul class="learn">
+    <li>The difference between identity and permission</li><li>Role-based access control and least privilege</li><li>Knowledge, possession and inherence factors; MFA vs 2FA</li><li>How one-time passwords work and where phishing still wins</li><li>Recognising common authentication attacks and the right defense</li><li>Why hiding an admin button is not access control</li>
+  </ul>
+  <button class="btn" data-go="register">Enter the Arena</button>
+</section>
+
+<section id="register" class="view narrow" hidden>
+  <form id="regForm" class="glass" novalidate>
+    <h2>Create demo account</h2>
+    <label>Username<input id="rUser" autocomplete="off" required></label>
+    <label>Email (fictional)<input id="rEmail" type="email" autocomplete="off" required></label>
+    <label>Password (do not reuse a real one)<input id="rPass" type="password" autocomplete="new-password" required></label>
+    <div class="meter"><i id="meterFill"></i></div><small id="meterText">Strength: enter a password</small>
+    <label>Confirm password<input id="rConf" type="password" autocomplete="new-password" required></label>
+    <label class="chk"><input id="rAck" type="checkbox"> I understand this is an educational demonstration and I am using fictional credentials.</label>
+    <p class="msg" id="regMsg" role="alert"></p>
+    <button class="btn" type="submit">Create account</button>
+    <p>Already have an account? <a href="#" data-go="login">Sign in</a></p>
+  </form>
+</section>
+
+<section id="enroll" class="view narrow" hidden>
+  <div class="glass">
+    <h2>Choose your second factor</h2>
+    <p class="sim">All three methods are simulations. No email is sent and no real biometric data is read.</p>
+    <div class="opts">
+      <button class="opt" data-mfa="app"><b>Authenticator app</b><small>Something you have: a device generating codes.</small></button>
+      <button class="opt" data-mfa="email"><b>Email OTP</b><small>Something you have: access to a mailbox.</small></button>
+      <button class="opt" data-mfa="bio"><b>Biometric</b><small>Something you are: a fingerprint.</small></button>
+    </div>
+    <div id="enrollBox"></div>
+  </div>
+</section>
+
+<section id="login" class="view narrow" hidden>
+  <form id="loginForm" class="glass" novalidate>
+    <h2>Sign in</h2>
+    <label>Username or email<input id="lUser" autocomplete="off"></label>
+    <label>Password<input id="lPass" type="password" autocomplete="off"></label>
+    <p class="msg" id="loginMsg" role="alert"></p>
+    <button class="btn" type="submit">Verify first factor</button>
+    <p>New here? <a href="#" data-go="register">Create demo account</a></p>
+  </form>
+</section>
+
+<section id="challenge" class="view narrow" hidden>
+  <div class="glass"><h2>Second-factor challenge</h2><p class="ok">First factor accepted.</p><div id="challengeBox"></div></div>
+</section>
+
+<section id="dash" class="view" hidden>
+  <h2 id="welcome"></h2>
+  <div class="grid4" id="stats"></div>
+  <div class="bar" aria-label="Level progress"><i id="lvlBar"></i></div>
+  <div class="cols">
+    <div class="glass"><h3>Daily challenge</h3><p id="daily"></p><button class="btn" id="continueBtn">Continue mission</button></div>
+    <div class="glass"><h3>Badges</h3><div id="badges" class="chips"></div><h3>Recent achievements</h3><ul id="recent"></ul></div>
+  </div>
+  <h3>Missions</h3><div class="grid3" id="missionCards"></div>
+  <div class="cols">
+    <div class="glass"><h3>Leaderboard (fictional players)</h3><ol id="board"></ol></div>
+    <div class="glass"><h3>Progress</h3><button class="btn danger" id="resetBtn">Reset progress</button></div>
+  </div>
+</section>
+
+<section id="mission" class="view narrow" hidden>
+  <button class="btn ghost" id="backDash">Back to dashboard</button>
+  <div class="glass" id="missionBox"></div>
+</section>
+</main>
+
+<dialog id="dlg"><p id="dlgText"></p><div class="row"><button class="btn danger" id="dlgYes">Yes, reset</button><button class="btn ghost" id="dlgNo">Cancel</button></div></dialog>
+<script src="script.js"></script>
+</body>
+</html>
